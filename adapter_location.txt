@@ -1,0 +1,1 @@
+C:\Users\amaan\.cache\huggingface\hub\models--4maan4hmad--Mistral-finetuned-sitemanager\snapshots\697c5b48896e0668a5a50b5b53750031feff0771
