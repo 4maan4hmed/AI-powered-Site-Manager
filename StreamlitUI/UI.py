@@ -3,48 +3,48 @@ import requests
 import json
 import pandas as pd
 from datetime import datetime
-import os 
-
+import os
 
 st.set_page_config(layout="wide")
 st.title("Ground Site Work - Comments Page")
 
 LLAMA_URL = "http://127.0.0.1:8080/completion"
-REPORT_FILE = "ground_site_report.json" 
+REPORT_FILE = "ground_site_report.json"
 
 # --- Helper Functions for File Operations ---
 
 def load_report_data():
-    """Loads report data from the JSON file."""
+    """Loads report data from the JSON file as a single JSON array."""
     if os.path.exists(REPORT_FILE):
         try:
             with open(REPORT_FILE, 'r') as f:
-                data = [json.loads(line) for line in f if line.strip()]
+                data = json.load(f) # Load the entire JSON array
+                if not isinstance(data, list): # Ensure it's a list
+                    st.warning(f"Warning: {REPORT_FILE} does not contain a JSON array. Initializing as empty.")
+                    return []
             return data
         except json.JSONDecodeError:
-            st.error(f"Error decoding JSON from {REPORT_FILE}. File might be corrupted.")
+            st.error(f"Error decoding JSON from {REPORT_FILE}. File might be corrupted or not a valid JSON array. Initializing as empty.")
             return []
         except Exception as e:
             st.error(f"Error reading {REPORT_FILE}: {e}")
             return []
-    return []
+    return [] # Return empty list if file doesn't exist
 
-def save_report_entry(entry):
-    """Appends a new entry to the JSON file."""
+def save_all_report_data(data_to_save):
+    """Saves the entire list of report data to the JSON file as a single JSON array, overwriting existing content."""
     try:
-        with open(REPORT_FILE, 'a') as f: # Open in append mode
-            f.write(json.dumps(entry) + '\n') # Write as a new line, making it NDJSON
+        with open(REPORT_FILE, 'w') as f: # Open in write mode ('w') to overwrite
+            json.dump(data_to_save, f, indent=4) # Use indent for pretty-printing
     except Exception as e:
         st.error(f"Error writing to {REPORT_FILE}: {e}")
 
 # --- Session State Initialization ---
-# Initialize chat history for AI interaction display
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 # Load existing report data at the start of the session
 if "report_data" not in st.session_state:
     st.session_state.report_data = load_report_data()
-# This will store the most recently classified data before adding to report
 if "current_classified_data" not in st.session_state:
     st.session_state.current_classified_data = None
 
@@ -62,7 +62,6 @@ if st.button("Submit Comment for Classification"):
     elif not comment_text.strip():
         st.error("Please enter your Observation/Comment.")
     else:
-        # Construct the prompt for the Mistral model
         prompt = f"""
 <|im_start|> You: You are a classification assistant.
 Classify the text into JSON with two fields:
@@ -73,7 +72,6 @@ Only return JSON.
 Input: {comment_text} <|im_end|>
 <|im_start|> assistant
 """
-
         payload = {
             "prompt": prompt,
             "temperature": 0.5,
@@ -130,8 +128,8 @@ if st.session_state.current_classified_data:
     if st.button("Add to Report"):
         # Add to session state for immediate display
         st.session_state.report_data.append(st.session_state.current_classified_data)
-        # Save to JSON file
-        save_report_entry(st.session_state.current_classified_data)
+        # Save the ENTIRE updated list to JSON file
+        save_all_report_data(st.session_state.report_data)
         st.success("Comment added to report and saved!")
         st.session_state.current_classified_data = None
 else:
@@ -143,25 +141,29 @@ st.header("AI Interaction Log (for Developers)")
 display_limit = 5
 for speaker, text in st.session_state.chat_history[-display_limit:]:
     if speaker == "AI (Raw Output)":
-        try: # Try to pretty-print if it's valid JSON
+        try:
             st.json(json.loads(text))
-        except json.JSONDecodeError: # Otherwise just print the raw text
+        except json.JSONDecodeError:
             st.code(text)
     else:
         st.markdown(f"**{speaker}:** {text}")
 
-# --- Today's Report (Displays all data from file) ---
+# --- Current Report (Displays all data from file) ---
 st.markdown("---")
 st.header("Current Report (from file)")
 
 # Always load the latest data from the file before displaying
-current_report_from_file = load_report_data()
+# We need to reload here because 'Add to Report' button triggers a rerun,
+# but the session_state.report_data is already updated.
+# This ensures consistency, especially if multiple app instances were writing.
+current_report_from_file_for_display = load_report_data()
 
-if current_report_from_file:
-    df = pd.DataFrame(current_report_from_file)
+if current_report_from_file_for_display:
+    df = pd.DataFrame(current_report_from_file_for_display)
     st.dataframe(df[["Timestamp", "Employee ID", "Type", "Task Group", "Original Comment"]])
-    st.markdown(f"Data is persisted in `{REPORT_FILE}`.")
+    st.markdown(f"Data is persisted in `{REPORT_FILE}` as a JSON array.")
 else:
     st.info("No comments in the report yet.")
+
 # --- Footer ---
 st.markdown("---")
