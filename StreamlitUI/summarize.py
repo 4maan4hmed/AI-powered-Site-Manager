@@ -4,23 +4,14 @@ import json
 import pandas as pd
 from datetime import datetime
 import os
-import subprocess
 
 # --- Configuration ---
-
-#running the Mistral model server
-
-subprocess.Popen([r"D:\Projects\Lattice interview 2\model run\mistral_7b.bat"], shell=True)
-
 st.set_page_config(layout="wide")
 st.title("Ground Site Work - Daily Report Generator")
 
 LLAMA_URL = "http://127.0.0.1:8080/completion"
 REPORT_DATA_FILE = "ground_site_report.json" # Source of raw data
 OUTPUT_REPORTS_DIR = "D:/Projects/Lattice interview 2/Summarise Report" # Directory for generated text reports
-import os
-
-os.system("D:/Projects/Lattice interview 2/model run/mistral_7b.bat")
 
 # --- Helper Functions for File Operations ---
 
@@ -124,7 +115,6 @@ Observations:
                 "prompt": prompt,
                 "temperature": 0.7, 
                 "n_predict": 512,  # for longer reports
-                "top_k": 50,  # Adjusted for better diversity
                 "stream": False,
                 "stop": ["<|im_end|>"],
             }
