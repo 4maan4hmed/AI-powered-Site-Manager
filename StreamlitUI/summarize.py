@@ -102,18 +102,24 @@ if st.button("Generate Report"):
 
             # Construct the prompt for the Mistral model
             prompt = f"""
-<|im_start|> You: You are an expert site manager report writer.
-Based on the following ground site observations, write a concise and informative daily report.
-Focus on summarizing the types of issues, identifying key task groups involved, and noting any significant observations.
-The report should be suitable for a management review.
+<|im_start|> Generate a **Daily Site Report** from the given observations.
 
-Observations:
+**Strict Output Requirements:**
+1.  **Starts with Date:** "Daily Site Report - YYYY-MM-DD" (use date from observations).
+2.  **Concise Summary:** Summarize all issues.
+3.  **Identify Roles/Parties:** Name involved task groups/personnel (by Employee ID if present).
+4.  **Key Observations:** Note significant points (e.g., severity, recurring patterns).
+5.  **Actions:** Mention actions taken or required.
+6.  **Management Tone:** Professional, objective, suitable for management.
+7.  **Format:** Single block of text. NO intros/conclusions, NO validation, NO markdown headings/bullets (unless explicitly part of observation data itself). Output ONLY the report.
+
+**Observations:**
 {data_for_ai} <|im_end|>
 <|im_start|> assistant
 """
             payload = {
                 "prompt": prompt,
-                "temperature": 0.7, 
+                "temperature": 0.65, 
                 "n_predict": 512,  # for longer reports
                 "stream": False,
                 "stop": ["<|im_end|>"],
