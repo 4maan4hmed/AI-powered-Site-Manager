@@ -39,8 +39,8 @@ Follow these steps to set up and run the project locally.
 1.  **Clone the repository:**
 
     ```bash
-    git clone <your-repository-url>
-    cd <your-repository-name>
+    git clone https://github.com/4maan4hmed/AI-powered-Site-Manager/
+    cd AI-powered-Site-Manager
     ```
 
 2.  **Create a virtual environment (recommended):**
