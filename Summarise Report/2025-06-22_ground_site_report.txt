@@ -1,11 +1,19 @@
 Daily Site Report - 2025-06-22
 
-Today's report highlights the following issues and tasks:
+The following issues were observed today:
 
-1. Safety Notice (Amber) - Employee ID 524562 reported that the lights near the saw blade are too dim, potentially creating a hazardous working environment. The safety team has been notified and will address this issue.
+1. Employee ID: 524562 raised a Safety Notice (Amber) regarding dim lights near the saw blade. This issue may potentially lead to accidents, and it is recommended that the lights be replaced or brightened for better visibility.
 
-2. Tasks for Site Management - Employee ID 524562 reported the need for additional personnel to assist in removing windows and addressing an issue with the reinforcement levels at GL 1-2, H-J. The contractor has been informed and is expected to rectify the issues.
+2. Employee ID: 524562 reported that additional manpower is required for removing windows. This task may be delayed if not addressed promptly.
 
-3. Quality Defect (compliance) - A flatpack duct was found to not be sealed laterally, which may compromise the integrity of the structure. The quality team will investigate and rectify the issue.
+3. A Quality Defect (compliance) was noted by Employee ID: 524562, where a flatpack duct was not sealed laterally. This could compromise the overall structure's integrity and should be addressed immediately.
 
-The report has been prepared for your review and further action as needed.
+4. An issue with the level of the reinforcement at GL 1-2, H-J was reported by Employee ID: 524562. It is necessary for the contractor to install further spacers as required to achieve the correct levels to ensure structural integrity.
+
+The required actions are:
+- Replace or brighten the dim lights near the saw blade.
+- Provide additional manpower for removing windows.
+- Address the Quality Defect with the flatpack duct.
+- Ensure the contractor installs further spacers for the reinforcement as required.
+
+This report has been prepared for management's attention and action.

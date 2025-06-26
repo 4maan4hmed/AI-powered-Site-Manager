@@ -93,8 +93,6 @@ if st.button("Generate Report"):
             st.session_state.generated_report_text = ""
             st.session_state.report_file_path = ""
         else:
-            # Prepare data for the AI prompt
-            # Convert list of dicts to a more readable string format for the AI
             data_for_ai = "\n".join([
                 f"- Employee ID: {entry.get('Employee ID')}, Type: {entry.get('Type')}, Task Group: {entry.get('Task Group')}, Comment: \"{entry.get('Original Comment')}\", Timestamp: {entry.get('Timestamp')}"
                 for entry in filtered_data
@@ -157,7 +155,6 @@ if st.session_state.generated_report_text:
     st.text_area("Report Content:", st.session_state.generated_report_text, height=300)
     if st.session_state.report_file_path:
         st.markdown(f"**Report saved at:** `{st.session_state.report_file_path}`")
-        # Optional: Add a download button for the generated .txt file
         with open(st.session_state.report_file_path, "r", encoding="utf-8") as file:
             st.download_button(
                 label="Download Report (Text File)",
@@ -171,7 +168,6 @@ else:
 # --- Current Report Data (from ground_site_report.json for reference) ---
 st.markdown("---")
 st.header("Raw Observation Data (from ground_site_report.json)")
-# Load and display data for reference, similar to the previous app
 all_ground_site_data = load_all_report_data_from_json_file()
 if all_ground_site_data:
     df_raw = pd.DataFrame(all_ground_site_data)

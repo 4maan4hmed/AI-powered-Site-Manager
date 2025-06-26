@@ -137,7 +137,7 @@ else:
 
 # --- Inner Working (AI Chat History for Developers) ---
 st.markdown("---")
-st.header("AI Interaction Log (for Developers)")
+st.header("Logs for OUTPUT")
 display_limit = 5
 for speaker, text in st.session_state.chat_history[-display_limit:]:
     if speaker == "AI (Raw Output)":
